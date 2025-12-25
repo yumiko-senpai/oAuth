@@ -86,7 +86,7 @@ app.get("/google/callback", async (req, res) => {
       });
     }
 
-    res.redirect("htpp://localhost:3000/visa-officer");
+    res.redirect("http://localhost:3000/visa-officer");
   } catch (err) {
     console.error(err);
     res.status(500).send("Authentication failed");
