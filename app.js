@@ -89,7 +89,7 @@ app.get("/google/callback", async (req, res) => {
       });
     }
 
-    res.json({ message: "Login successful" });
+    res.redirect('http://localhost:3000');
   } catch (err) {
     console.error(err);
     res.status(500).send("Authentication failed");
