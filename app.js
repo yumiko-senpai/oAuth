@@ -37,16 +37,13 @@ const client = new OAuth2Client(
 app.get("/", (req, res) => {
   const state = crypto.randomBytes(16).toString("hex");
   stateStore.add(state);
-
-  const authUrl =
-    `${GOOGLE_OAUTH_URL}?` +
-    `client_id=${GOOGLE_CLIENT_ID}` +
-    `&redirect_uri=${encodeURIComponent(GOOGLE_CALLBACK_URL)}` +
-    `&response_type=code` +
-    `&scope=${encodeURIComponent(SCOPES.join(" "))}` +
-    `&access_type=offline` +
-    `&prompt=consent` +
-    `&state=${state}`;
+  
+  const authUrl = client.generateAuthUrl({
+    access_type: 'offline',
+    scope: SCOPES,
+    prompt: consent,
+    state
+    });
 
   res.redirect(authUrl);
 });
@@ -89,7 +86,7 @@ app.get("/google/callback", async (req, res) => {
       });
     }
 
-    res.redirect('http://localhost:3000');
+    res.redirect("htpp://localhost:3000/visa-officer");
   } catch (err) {
     console.error(err);
     res.status(500).send("Authentication failed");
