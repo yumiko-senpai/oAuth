@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
   const authUrl = client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
-    prompt: consent,
+    prompt: 'consent',
     state
     });
 
