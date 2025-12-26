@@ -1,20 +1,24 @@
 const AgentSchema = new mongoose.Schema(
   {
-    // Personal Info
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    phone: String,
-    profilePhoto: String,
-    
-    // Agency they belong to
+    name: { 
+        type: String, 
+        required: true 
+    },
+    email: { 
+        type: String, 
+        required: true, 
+        unique: true 
+    },
+    password: { 
+        type: String, 
+        required: true 
+    },
     agency: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Agency",
       required: true
     },
-    
-    // Role and specialization
+
     role: {
       type: String,
       enum: ["visa_officer", "admission_officer", "counselor", "manager", "general"],
