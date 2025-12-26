@@ -49,8 +49,14 @@ const AgencySchema = new mongoose.Schema(
         ref: "University"
       }
     ],
+    studentsRegistered: [
+      { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Student" 
+      }
+    ],
+
   },
-  {
-    timestamps: true
-  }
+  { timestamps: true}
 );
+

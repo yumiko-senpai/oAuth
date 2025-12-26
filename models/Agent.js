@@ -4,15 +4,23 @@ const AgentSchema = new mongoose.Schema(
         type: String, 
         required: true 
     },
+
     email: { 
         type: String, 
         required: true, 
         unique: true 
     },
+
     password: { 
         type: String, 
         required: true 
     },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+
     agency: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Agency",
@@ -21,13 +29,13 @@ const AgentSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ["visa_officer", "admission_officer", "counselor", "manager", "general"],
-      default: "general"
+      enum: ["visa_officer", "admission_officer", "no-role"],
+      default: "no-role"
     },
 
     assignedStudents: [{
-      student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
-      assignedDate: Date
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: "Student"
     }],
 
     status: {
