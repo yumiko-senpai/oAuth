@@ -5,6 +5,7 @@ import connectDB from './db.js'
 import User from "./models/User.js";
 import { OAuth2Client } from "google-auth-library";
 import crypto from 'crypto';
+import cors from 'cors';
 
 //config
 dotenv.config();
@@ -12,6 +13,7 @@ dotenv.config();
 // app config
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 // Listening to the port 8000
 const PORT = process.env.PORT || 8000;
@@ -90,6 +92,63 @@ app.get("/google/callback", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Authentication failed");
+  }
+});
+
+// Add this endpoint for mobile authentication
+app.post("/auth/mobile", async (req, res) => {
+  try {
+    const { id_token } = req.body;
+    
+    if (!id_token) {
+      return res.status(400).json({ 
+        error: "Missing id_token" 
+      });
+    }
+
+    const ticket = await client.verifyIdToken({
+      idToken: id_token,
+      audience: process.env.GOOGLE_CLIENT_ID
+    });
+
+    const payload = ticket.getPayload();
+    
+    if (!payload) {
+      return res.status(401).json({ 
+        error: "Invalid token" 
+      });
+    }
+
+    const googleId = payload.sub;
+    const email = payload.email;
+    const name = payload.name;
+
+    let user = await User.findOne({ googleId });
+
+    if (!user) {
+      user = await User.create({
+        googleId,
+        email,
+        name
+      });
+    }
+    
+    await user.save();
+
+    return res.json({messgae: "login successful"});
+
+  } catch (error) {
+    console.error("Mobile auth error:", error);
+    
+    if (error.message.includes("Token used too late")) {
+      return res.status(401).json({ 
+        error: "Token expired" 
+      });
+    }
+    
+    return res.status(500).json({ 
+      error: "Authentication failed" 
+    });
   }
 });
 

@@ -19,6 +19,10 @@ const AgencySchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+     logo: {
+      type: String,
+      trim: true,
+    },
     servicesOffered: {
       type: [String],
       default: []
@@ -27,7 +31,7 @@ const AgencySchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    description: {
+    about: {
       type: String,
       trim: true
     },
@@ -50,6 +54,3 @@ const AgencySchema = new mongoose.Schema(
     timestamps: true
   }
 );
-
-AgencySchema.index({ email: 1 }); 
-export default mongoose.model("Agency", AgencySchema);
