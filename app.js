@@ -135,7 +135,7 @@ app.post("/auth/mobile", async (req, res) => {
     
     await user.save();
 
-    return res.json({messgae: "login successful"});
+    return res.json({message: "login successful"});
 
   } catch (error) {
     console.error("Mobile auth error:", error);
